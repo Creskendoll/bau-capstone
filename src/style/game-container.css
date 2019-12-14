@@ -1,0 +1,14 @@
+.background {
+  background-color: cornflowerblue;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  justify-content: space-around;
+}
+
+.game-container {
+  height: 80vh;
+  width: 95vw;
+  background-color: black;
+}

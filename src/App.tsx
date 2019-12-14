@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./style/App.css";
+import GameContainer from "./components/GameContainer";
+import GameMode from "./resources/GameEnum";
 
 const App: React.FC = () => {
+  const [gameMode, setGameMode] = useState(GameMode.MENU);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {gameMode !== GameMode.MENU && (
+          <button
+            onClick={() => setGameMode(GameMode.MENU)}
+            className="back-button"
+          >
+            BACK
+          </button>
+        )}
       </header>
+      <body className="App-body">
+        <GameContainer
+          gameMode={gameMode}
+          onMenuBtnClick={gameMode => setGameMode(gameMode)}
+        />
+      </body>
     </div>
   );
-}
+};
 
 export default App;

@@ -1,0 +1,29 @@
+.menu-container {
+  justify-content: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+.menu-button {
+  cursor: pointer;
+  margin: 2em;
+  width: 50vw;
+  border-radius: 10px;
+  height: 20vh;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+
+.menu-button:hover {
+  background-color: darkturquoise;
+  transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+}
