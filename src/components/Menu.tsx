@@ -7,6 +7,7 @@ interface Props {
 }
 
 const Menu: React.FC<Props> = (props: Props) => {
+  // TODO: Add more options
   return (
     <div className="menu-container">
       <button

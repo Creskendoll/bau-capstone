@@ -14,6 +14,7 @@ const GameContainer: React.FC<Props> = (props: Props) => {
     // TODO: Add more games
     switch (props.gameMode) {
       case GameMode.MENU:
+        // Display menu
         return <Menu onClick={props.onMenuBtnClick} />;
       case GameMode.CARDS:
         return <CardsGame />;
@@ -22,6 +23,7 @@ const GameContainer: React.FC<Props> = (props: Props) => {
     }
   };
 
+  // Render the current game
   return (
     <div className="background">
       <div className="game-container">{getGame()}</div>

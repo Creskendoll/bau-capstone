@@ -5,6 +5,7 @@ interface Props {
 }
 
 const GameCard: React.FC<Props> = (props: Props) => {
+  // TODO: Attach on click
   return (
     <div className="card-container">
       <img className="card-image" src={props.imageSrc} alt="Card" />
