@@ -14,21 +14,21 @@ const Menu: React.FC<Props> = (props: Props) => {
         onClick={() => props.onClick(GameMode.CARDS)}
         className="menu-button"
       >
-        CARDS
+        <span className="menu-button-text">MATH</span>
       </button>
 
       <button
         onClick={() => props.onClick(GameMode.CARDS)}
         className="menu-button"
       >
-        CARDS
+        <span className="menu-button-text">MATCH</span>
       </button>
 
       <button
         onClick={() => props.onClick(GameMode.CARDS)}
         className="menu-button"
       >
-        CARDS
+        <span className="menu-button-text">MEMORIZE</span>
       </button>
     </div>
   );

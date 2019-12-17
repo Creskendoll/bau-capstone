@@ -13,10 +13,16 @@
   width: 50vw;
   border-radius: 10px;
   height: 20vh;
-  -webkit-transition: 0.5s ease-in-out;
-  -moz-transition: 0.5s ease-in-out;
-  -o-transition: 0.5s ease-in-out;
-  transition: 0.5s ease-in-out;
+  -webkit-transition: 0.3s ease-in-out;
+  -moz-transition: 0.3s ease-in-out;
+  -o-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.menu-button-text {
+  font-size: 6vw;
+  font-weight: bold;
+  font-family: fantasy;
 }
 
 .menu-button:hover {
