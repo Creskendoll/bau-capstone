@@ -25,7 +25,7 @@ const Menu: React.FC<Props> = (props: Props) => {
       </button>
 
       <button
-        onClick={() => props.onClick(GameMode.CARDS)}
+        onClick={() => props.onClick(GameMode.DOTS)}
         className="menu-button"
       >
         <span className="menu-button-text">MEMORIZE</span>
