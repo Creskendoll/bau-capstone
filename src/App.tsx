@@ -9,25 +9,24 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        {/* Back button */}
-        {/* Only show the back button when we're not displaying the menu */}
-        {gameMode !== GameMode.MENU && (
-          <button
-            onClick={() => setGameMode(GameMode.MENU)}
-            className="back-button"
-          >
-            BACK
-          </button>
-        )}
-      </header>
-      <body className="App-body">
+        <div className="App-header">
+          {/* Back button */}
+          {/* Only show the back button when we're not displaying the menu */}
+          {gameMode !== GameMode.MENU && (
+            <button
+              onClick={() => setGameMode(GameMode.MENU)}
+              className="back-button"
+            >
+              BACK
+            </button>
+          )}
+        </div>
+
         {/* Game Container */}
         <GameContainer
           gameMode={gameMode}
           onMenuBtnClick={gameMode => setGameMode(gameMode)}
         />
-      </body>
     </div>
   );
 };

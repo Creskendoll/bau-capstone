@@ -6,6 +6,7 @@ import CompPosition from "../../misc/CompPosition";
 interface Props {
   color: Color;
   position: CompPosition;
+  onClick: (index : number) => void;
 }
 
 const GameDot = (props: Props) => {

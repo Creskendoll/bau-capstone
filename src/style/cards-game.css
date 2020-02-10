@@ -27,7 +27,6 @@
 .cards-game-area {
   height: 100%;
   width: 100%;
-  border: 5px solid white;
   grid-template-columns: 20vw 20vw 20vw 20vw;
   justify-content: space-between;
   text-align: center;
