@@ -6,6 +6,7 @@ import CompPosition from "../../misc/CompPosition";
 interface Props {
   color: Color;
   position: CompPosition;
+  className: string;
   onClick: () => void;
 }
 
@@ -25,7 +26,7 @@ const GameDot = (props: Props) => {
   return (
     <div
       style={dotStyle as any}
-      className="circle"
+      className={props.className}
       onClick={() => props.onClick()}
     ></div>
   );
