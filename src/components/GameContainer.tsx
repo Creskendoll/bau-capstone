@@ -1,18 +1,18 @@
 import React from "react";
 import "../style/game-container.css";
 import GameMode from "../resources/GameEnum";
-import CardsGame from "./CardsGame";
+import CardsGame from "./cards-game/CardsGame";
 import Menu from "./Menu";
-import DotsGame from "./order-game/DotsGame";
+import DotsGame from "./dots-game/DotsGame";
+import MathGame from "./math-game/MathGame";
 
 interface Props {
   gameMode: GameMode;
   onMenuBtnClick: (gameMode: GameMode) => void;
 }
 
-const GameContainer: React.FC<Props> = (props: Props) => {
+const GameContainer = (props: Props) => {
   const getGame = () => {
-    // TODO: Add more games
     switch (props.gameMode) {
       case GameMode.MENU:
         // Display menu
@@ -21,8 +21,10 @@ const GameContainer: React.FC<Props> = (props: Props) => {
         return <CardsGame />;
       case GameMode.DOTS:
         return <DotsGame />;
+      case GameMode.MATH:
+        return <MathGame />;
       default:
-        break;
+        return <Menu onClick={props.onMenuBtnClick} />;
     }
   };
 

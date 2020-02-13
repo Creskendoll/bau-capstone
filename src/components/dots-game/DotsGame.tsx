@@ -44,7 +44,7 @@ const DotsGame = () => {
     });
   };
 
-  const generateDots = (n: number) => {
+  const generateDots = (n : number) => {
     setDots(
       [...Array(n).keys()].map(index => {
         const pos: CompPosition = {
@@ -64,8 +64,9 @@ const DotsGame = () => {
   const getDots = () => {
     // Defined in game-container.css
     // Subtract the size of the dots
-    const containerH = windowSize.height * SCREEN_RATIO.H - DOT_SIZE;
-    const containerW = windowSize.width * SCREEN_RATIO.W - DOT_SIZE;
+    const dotSize = DOT_SIZE * windowSize.width * 1.2;
+    const containerH = (SCREEN_RATIO.H * windowSize.height) - dotSize;
+    const containerW = (SCREEN_RATIO.W  * windowSize.width) - dotSize;
 
     return dots.map((dot, index) => {
       const pos: CompPosition = {
@@ -76,7 +77,7 @@ const DotsGame = () => {
         <GameDot
           key={index}
           className={
-            dot.color === HIGHLIGHT_COLOR ? "circle expanded" : "circle"
+            dot.color === HIGHLIGHT_COLOR || dot.color === CORRECT_COLOR ? "circle expanded" : "circle"
           }
           color={dot.color}
           position={pos}
@@ -86,14 +87,14 @@ const DotsGame = () => {
     });
   };
 
-  const resetGame = async () => {
+  const resetGame = async (newLevel : boolean) => {
     await sleep(800);
     setUserClicks([]);
-    generateDots(5);
+    generateDots(newLevel ? dots.length+1 : 3);
   };
 
   const onDotClick = async (dot: DotModel) => {
-    if (sequenceState === SequenceState.RAN) {
+    if (sequenceState === SequenceState.RAN && dot.color !== CORRECT_COLOR && dot.color !== WRONG_COLOR) {
       // Update the color of the clicked dot
       const newDot = Object.assign({}, dot);
 
@@ -101,18 +102,20 @@ const DotsGame = () => {
         newDot.color = CORRECT_COLOR;
         setUserClicks(userClicks.concat([dot]));
         updateDot(dot, newDot);
-        if (dot.index + 1 === dots.length) resetGame();
+        if (dot.index + 1 === dots.length) {
+          resetGame(true);
+        }
       } else {
         newDot.color = WRONG_COLOR;
         updateDot(dot, newDot);
-        resetGame();
+        resetGame(false);
       }
     }
   };
 
   useEffect(() => {
     updateWindowDimensions();
-    generateDots(5);
+    generateDots(3);
     window.addEventListener("resize", updateWindowDimensions);
   }, []);
 

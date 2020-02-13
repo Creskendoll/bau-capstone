@@ -33,7 +33,7 @@ const SCREEN_RATIO = {
   W: 0.95,
   H: 0.8
 };
-const DOT_SIZE = 50;
+const DOT_SIZE = 0.04;
 
 export {
   HIGHLIGHT_COLOR,

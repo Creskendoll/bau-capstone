@@ -1,6 +1,6 @@
 import React from "react";
 import GameCard from "./GameCard";
-import "../style/cards-game.css";
+import "../../style/cards-game.css";
 
 const CardsGame = () => {
   // TODO: Add game logic
