@@ -1,22 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../style/dots-game.css";
 import GameDot from "./GameDot";
-import Color from "../../misc/Color";
 import CompPosition from "../../misc/CompPosition";
 import DotModel from "./DotModel";
-
-const highlightColor: Color = {
-  red: 250,
-  green: 50,
-  blue: 50,
-  alpha: 1
-};
-
-enum SequenceState {
-  NOT_RAN,
-  RUNNING,
-  RAN
-}
+import { sleep } from "../../misc/Helpers";
+import {
+  SequenceState,
+  HIGHLIGHT_COLOR,
+  CORRECT_COLOR,
+  WRONG_COLOR,
+  DOT_SIZE,
+  SCREEN_RATIO,
+  DOT_COLOR
+} from "./DotGameConstants";
 
 const DotsGame = () => {
   const [sequenceState, setSequenceState] = useState(SequenceState.NOT_RAN);
@@ -37,15 +33,9 @@ const DotsGame = () => {
   const runSequence = () => {
     setSequenceState(SequenceState.RUNNING);
 
-    const sleep = (ms: number) => {
-      return new Promise(resolve => {
-        setTimeout(resolve, ms);
-      });
-    };
-
     dots.forEach(async (dot, index) => {
       const newDot = Object.assign({}, dot);
-      newDot.color = highlightColor;
+      newDot.color = HIGHLIGHT_COLOR;
       await sleep(1000 * (index + 1));
       updateDot(dot, newDot);
       await sleep(500);
@@ -57,19 +47,13 @@ const DotsGame = () => {
   const generateDots = (n: number) => {
     setDots(
       [...Array(n).keys()].map(index => {
-        const color: Color = {
-          red: 50,
-          green: 150,
-          blue: 220,
-          alpha: 1
-        };
         const pos: CompPosition = {
           top: Math.random(),
           left: Math.random()
         };
         return {
           position: pos,
-          color: color,
+          color: DOT_COLOR,
           index: index
         };
       })
@@ -80,8 +64,8 @@ const DotsGame = () => {
   const getDots = () => {
     // Defined in game-container.css
     // Subtract the size of the dots
-    const containerH = windowSize.height * 0.8 - 50;
-    const containerW = windowSize.width * 0.95 - 50;
+    const containerH = windowSize.height * SCREEN_RATIO.H - DOT_SIZE;
+    const containerW = windowSize.width * SCREEN_RATIO.W - DOT_SIZE;
 
     return dots.map((dot, index) => {
       const pos: CompPosition = {
@@ -92,7 +76,7 @@ const DotsGame = () => {
         <GameDot
           key={index}
           className={
-            dot.color === highlightColor ? "circle expanded" : "circle"
+            dot.color === HIGHLIGHT_COLOR ? "circle expanded" : "circle"
           }
           color={dot.color}
           position={pos}
@@ -102,35 +86,26 @@ const DotsGame = () => {
     });
   };
 
-  const onDotClick = (dot: DotModel) => {
+  const resetGame = async () => {
+    await sleep(800);
+    setUserClicks([]);
+    generateDots(5);
+  };
+
+  const onDotClick = async (dot: DotModel) => {
     if (sequenceState === SequenceState.RAN) {
       // Update the color of the clicked dot
-      const correctColor: Color = {
-        red: 20,
-        green: 255,
-        blue: 20,
-        alpha: 1
-      };
-      const wrongColor: Color = {
-        red: 255,
-        green: 20,
-        blue: 20,
-        alpha: 1
-      };
       const newDot = Object.assign({}, dot);
 
       if (dot.index === userClicks.length) {
-        newDot.color = correctColor;
+        newDot.color = CORRECT_COLOR;
         setUserClicks(userClicks.concat([dot]));
         updateDot(dot, newDot);
-        if (dot.index + 1 === dots.length) {
-          setUserClicks([]);
-          generateDots(5);
-        }
+        if (dot.index + 1 === dots.length) resetGame();
       } else {
-        newDot.color = wrongColor;
-        setUserClicks([]);
-        generateDots(5);
+        newDot.color = WRONG_COLOR;
+        updateDot(dot, newDot);
+        resetGame();
       }
     }
   };
