@@ -1,7 +1,7 @@
 import Color from "../../misc/Color";
 
 const HIGHLIGHT_COLOR: Color = {
-  red: 255,
+  red: 20,
   green: 255,
   blue: 20,
   alpha: 1
@@ -24,9 +24,9 @@ const WRONG_COLOR: Color = {
   alpha: 1
 };
 const DOT_COLOR: Color = {
-  red: 50,
-  green: 150,
-  blue: 220,
+  red: 100,
+  green: 149,
+  blue: 237,
   alpha: 1
 };
 const SCREEN_RATIO = {

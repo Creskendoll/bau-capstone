@@ -1,0 +1,20 @@
+.math-game-area {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.question {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1vw;
+  -webkit-border-radius: 1vw;
+  -moz-border-radius: 1vw;
+  border-radius: 1vw;
+  cursor: pointer;
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  -o-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+}
