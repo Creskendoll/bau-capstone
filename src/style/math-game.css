@@ -4,7 +4,7 @@
   position: relative;
 }
 
-.question {
+.cell {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,4 +17,24 @@
   -moz-transition: 0.2s ease-in-out;
   -o-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
+}
+
+.cell:hover {
+  transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+}
+
+.clicked {
+  background: green !important;
+}
+
+.question {
+  background: cornflowerblue;
+}
+
+.answer {
+  background: yellow;
 }

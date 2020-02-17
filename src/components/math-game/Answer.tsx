@@ -1,25 +1,27 @@
 import React from "react";
-import CompPosition from "../../misc/CompPosition";
+import QuestionModel from "./QuestionModel";
 
 interface Props {
-  answer: string;
-  position: CompPosition;
+  model: QuestionModel;
+  onClick: () => void;
+  className: string;
 }
 
 const Answer = (props: Props) => {
   const style = {
-    ...props.position,
+    ...props.model.answer!!.position,
     ...{
-      background: "yellow",
-      position: "absolute",
-      justifyContent: "center",
-      alignItems: "center"
+      position: "absolute"
     }
   };
 
   return (
-    <div style={style as any} className="question">
-      <span>{props.answer}</span>
+    <div
+      onClick={props.onClick}
+      style={style as any}
+      className={props.className}
+    >
+      <span>{props.model.answer!!.value.toString()}</span>
     </div>
   );
 };

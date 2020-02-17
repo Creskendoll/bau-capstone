@@ -1,0 +1,3 @@
+const CHAR_LENGTH = 50;
+const CELL_HEIGHT = 0.08;
+export { CHAR_LENGTH, CELL_HEIGHT };

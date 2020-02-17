@@ -1,7 +1,11 @@
 import CompPosition from "../../misc/CompPosition";
 
 export default interface QuestionModel {
-  question: string;
-  answer: number;
-  position: CompPosition;
+  index: number;
+  question?: string;
+  answer?: {
+    value: number;
+    position: CompPosition;
+  };
+  position?: CompPosition;
 }

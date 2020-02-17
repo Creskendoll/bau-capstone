@@ -3,4 +3,7 @@ const sleep = (ms: number) => {
     setTimeout(resolve, ms);
   });
 };
-export { sleep };
+
+const pickRand = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
+
+export { sleep, pickRand };
