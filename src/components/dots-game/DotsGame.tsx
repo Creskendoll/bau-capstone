@@ -14,7 +14,11 @@ import {
   DOT_COLOR
 } from "./DotGameConstants";
 
-const DotsGame = () => {
+interface Props {
+  setScore: (score: number) => void;
+}
+
+const DotsGame = (props: Props) => {
   const [sequenceState, setSequenceState] = useState(SequenceState.NOT_RAN);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [dots, setDots] = useState<DotModel[]>([]);

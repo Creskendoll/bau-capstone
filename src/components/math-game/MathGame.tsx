@@ -7,7 +7,11 @@ import Answer from "./Answer";
 import { pickRand } from "../../misc/Helpers";
 import { CHAR_LENGTH, CELL_HEIGHT } from "./MathGameConstants";
 
-const MathGame = () => {
+interface Props {
+  setScore: (score: number) => void;
+}
+
+const MathGame = (props: Props) => {
   const [questions, setQuestions] = useState<QuestionModel[]>([]);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [userClicks, setUserClicks] = useState<QuestionModel[]>([]);
@@ -56,20 +60,24 @@ const MathGame = () => {
     setQuestions([...Array(n).keys()].map(i => generateQuestion(2, i)));
   };
 
-  const onAnswerClick = (q: QuestionModel) => {
+  const isCorrectClick = (q: QuestionModel) => {
     if (userClicks.length === 1) {
-      const firstClick = userClicks[0];
-      if (calculateResult(firstClick.question!!) === q.answer!!.value) {
-        // Remove questions
+      const prevClick = userClicks[0];
+
+      // If correct
+      if (calculateResult(prevClick.question!!) === q.answer!!.value) {
+        // Remove clicked questions
         const newQuestions = questions.filter(
-          qInner =>
-            qInner.index !== q.index || qInner.index !== firstClick.index
+          qInner => qInner.index !== q.index || qInner.index !== prevClick.index
         );
         setQuestions(newQuestions);
+
+        // TODO: Score algorithm
+        props.setScore(questions.length);
       } else {
+        // If incorrect
         const newQuestions = questions.filter(
-          qInner =>
-            qInner.index !== q.index || qInner.index !== firstClick.index
+          qInner => qInner.index !== q.index || qInner.index !== prevClick.index
         );
         // Generate new questions
         setQuestions(
@@ -78,6 +86,45 @@ const MathGame = () => {
       }
       setUserClicks([]);
     } else {
+      // TODO: This is a fucking hack, get rid of it
+      const hack: QuestionModel = {
+        index: q.index,
+        answer: q.answer,
+        position: undefined,
+        question: undefined
+      };
+      setUserClicks(userClicks.concat([hack]));
+    }
+  };
+
+  const onAnswerClick = (q: QuestionModel) => {
+    if (userClicks.length === 1) {
+      const firstClick = userClicks[0];
+
+      // If correct
+      if (calculateResult(firstClick.question!!) === q.answer!!.value) {
+        // Remove clicked questions
+        const newQuestions = questions.filter(
+          question =>
+            // Remove clicked questions
+            question.index !== q.index || question.index !== firstClick.index
+        );
+        setQuestions(newQuestions);
+
+        // TODO: Score algorithm
+        props.setScore(questions.length);
+      } else {
+        // If incorrect
+        // const newQuestions = questions.filter(
+        //   question =>
+        //     question.index !== q.index || question.index !== firstClick.index
+        // );
+        // Generate new questions
+        setQuestions(questions.concat([generateQuestion(2, questions.length)]));
+      }
+      setUserClicks([]);
+    } else {
+      // TODO: This is a fucking hack, get rid of it
       const hack: QuestionModel = {
         index: q.index,
         answer: q.answer,
@@ -90,25 +137,30 @@ const MathGame = () => {
   const onQuestionClick = (q: QuestionModel) => {
     if (userClicks.length === 1) {
       const firstClick = userClicks[0];
-      if (calculateResult(q.question!!) === userClicks[0].answer!!.value) {
-        // Remove questions
+
+      // If correct
+      if (calculateResult(q.question!!) === firstClick.answer!!.value) {
+        // Remove clicked questions
         const newQuestions = questions.filter(
-          qInner =>
-            qInner.index !== q.index || qInner.index !== firstClick.index
+          question =>
+            question.index !== q.index || question.index !== firstClick.index
         );
         setQuestions(newQuestions);
+
+        // TODO: Score algorithm
+        props.setScore(questions.length);
       } else {
-        const newQuestions = questions.filter(
-          qInner =>
-            qInner.index !== q.index || qInner.index !== firstClick.index
-        );
+        // If incorrect
+        // const newQuestions = questions.filter(
+        //   qInner =>
+        //     qInner.index !== q.index || qInner.index !== firstClick.index
+        // );
         // Generate new questions
-        setQuestions(
-          newQuestions.concat([generateQuestion(2, questions.length)])
-        );
+        setQuestions(questions.concat([generateQuestion(2, questions.length)]));
       }
       setUserClicks([]);
     } else {
+      // TODO: This is a fucking hack, get rid of it
       const hack: QuestionModel = {
         index: q.index,
         answer: undefined,

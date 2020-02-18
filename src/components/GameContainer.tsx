@@ -7,6 +7,7 @@ import DotsGame from "./dots-game/DotsGame";
 import MathGame from "./math-game/MathGame";
 
 interface Props {
+  setScore: (score: number) => void;
   gameMode: GameMode;
   onMenuBtnClick: (gameMode: GameMode) => void;
 }
@@ -20,9 +21,9 @@ const GameContainer = (props: Props) => {
       case GameMode.CARDS:
         return <CardsGame />;
       case GameMode.DOTS:
-        return <DotsGame />;
+        return <DotsGame setScore={props.setScore} />;
       case GameMode.MATH:
-        return <MathGame />;
+        return <MathGame setScore={props.setScore} />;
       default:
         return <Menu onClick={props.onMenuBtnClick} />;
     }
