@@ -6,15 +6,17 @@ import "../../style/math-game.css";
 import Answer from "./Answer";
 import { pickRand } from "../../misc/Helpers";
 import { CHAR_LENGTH, CELL_HEIGHT } from "./MathGameConstants";
+import CompPosition from "../../misc/CompPosition";
 
 interface Props {
-  setScore: (score: number) => void;
+  setScore: (f: (score: number) => number) => void;
 }
 
 const MathGame = (props: Props) => {
   const [questions, setQuestions] = useState<QuestionModel[]>([]);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [userClicks, setUserClicks] = useState<QuestionModel[]>([]);
+  const [level, setLevel] = useState(1);
 
   const updateWindowDimensions = () => {
     setWindowSize({ width: window.innerWidth, height: window.innerHeight });
@@ -25,10 +27,6 @@ const MathGame = (props: Props) => {
   const calculateResult = (question: string): number => eval(question);
 
   const generateQuestion = (length: number, index: number): QuestionModel => {
-    const questionSize = length * CHAR_LENGTH;
-    const containerH = (SCREEN_RATIO.H - CELL_HEIGHT) * windowSize.height;
-    const containerW = SCREEN_RATIO.W * windowSize.width - questionSize;
-
     const sentence: string = [...Array(length * 2 - 1).keys()]
       .map(val => {
         if (val % 2 === 0) {
@@ -45,13 +43,13 @@ const MathGame = (props: Props) => {
       answer: {
         value: calculateResult(sentence),
         position: {
-          top: Math.random() * containerH,
-          left: Math.random() * containerW
+          top: Math.random(),
+          left: Math.random()
         }
       },
       position: {
-        top: Math.random() * containerH,
-        left: Math.random() * containerW
+        top: Math.random(),
+        left: Math.random()
       }
     };
   };
@@ -60,46 +58,14 @@ const MathGame = (props: Props) => {
     setQuestions([...Array(n).keys()].map(i => generateQuestion(2, i)));
   };
 
-  const isCorrectClick = (q: QuestionModel) => {
-    if (userClicks.length === 1) {
-      const prevClick = userClicks[0];
-
-      // If correct
-      if (calculateResult(prevClick.question!!) === q.answer!!.value) {
-        // Remove clicked questions
-        const newQuestions = questions.filter(
-          qInner => qInner.index !== q.index || qInner.index !== prevClick.index
-        );
-        setQuestions(newQuestions);
-
-        // TODO: Score algorithm
-        props.setScore(questions.length);
-      } else {
-        // If incorrect
-        const newQuestions = questions.filter(
-          qInner => qInner.index !== q.index || qInner.index !== prevClick.index
-        );
-        // Generate new questions
-        setQuestions(
-          newQuestions.concat([generateQuestion(2, questions.length)])
-        );
-      }
-      setUserClicks([]);
-    } else {
-      // TODO: This is a fucking hack, get rid of it
-      const hack: QuestionModel = {
-        index: q.index,
-        answer: q.answer,
-        position: undefined,
-        question: undefined
-      };
-      setUserClicks(userClicks.concat([hack]));
-    }
-  };
-
   const onAnswerClick = (q: QuestionModel) => {
     if (userClicks.length === 1) {
       const firstClick = userClicks[0];
+
+      if (!firstClick.question) {
+        setUserClicks([]);
+        return;
+      }
 
       // If correct
       if (calculateResult(firstClick.question!!) === q.answer!!.value) {
@@ -109,10 +75,12 @@ const MathGame = (props: Props) => {
             // Remove clicked questions
             question.index !== q.index || question.index !== firstClick.index
         );
+
+        if (newQuestions.length === 0) setLevel(level + 1);
         setQuestions(newQuestions);
 
         // TODO: Score algorithm
-        props.setScore(questions.length);
+        props.setScore(s => s + 1);
       } else {
         // If incorrect
         // const newQuestions = questions.filter(
@@ -120,11 +88,14 @@ const MathGame = (props: Props) => {
         //     question.index !== q.index || question.index !== firstClick.index
         // );
         // Generate new questions
-        setQuestions(questions.concat([generateQuestion(2, questions.length)]));
+        setQuestions(
+          questions.concat([generateQuestion(2, questions.length + 1)])
+        );
+        props.setScore(s => s - 1);
       }
       setUserClicks([]);
     } else {
-      // TODO: This is a fucking hack, get rid of it
+      // TODO: This is a hack, get rid of it
       const hack: QuestionModel = {
         index: q.index,
         answer: q.answer,
@@ -138,6 +109,11 @@ const MathGame = (props: Props) => {
     if (userClicks.length === 1) {
       const firstClick = userClicks[0];
 
+      if (!firstClick.answer) {
+        setUserClicks([]);
+        return;
+      }
+
       // If correct
       if (calculateResult(q.question!!) === firstClick.answer!!.value) {
         // Remove clicked questions
@@ -145,10 +121,11 @@ const MathGame = (props: Props) => {
           question =>
             question.index !== q.index || question.index !== firstClick.index
         );
+
+        if (newQuestions.length === 0) setLevel(level + 1);
         setQuestions(newQuestions);
 
-        // TODO: Score algorithm
-        props.setScore(questions.length);
+        props.setScore(s => s + 1);
       } else {
         // If incorrect
         // const newQuestions = questions.filter(
@@ -156,11 +133,14 @@ const MathGame = (props: Props) => {
         //     qInner.index !== q.index || qInner.index !== firstClick.index
         // );
         // Generate new questions
-        setQuestions(questions.concat([generateQuestion(2, questions.length)]));
+        setQuestions(
+          questions.concat([generateQuestion(2, questions.length + 1)])
+        );
+        props.setScore(s => s - 1);
       }
       setUserClicks([]);
     } else {
-      // TODO: This is a fucking hack, get rid of it
+      // TODO: This is a hack, get rid of it
       const hack: QuestionModel = {
         index: q.index,
         answer: undefined,
@@ -172,33 +152,67 @@ const MathGame = (props: Props) => {
   };
 
   const getQuestions = () => {
+    const getScreenPos = (length: number, pos: CompPosition): CompPosition => {
+      const questionSize = length * CHAR_LENGTH;
+      const containerH = (SCREEN_RATIO.H - CELL_HEIGHT) * windowSize.height;
+      const containerW = SCREEN_RATIO.W * windowSize.width - questionSize;
+
+      return {
+        top: pos.top * containerH,
+        left: pos.left * containerW
+      };
+    };
+
     // TODO: Make Question and Answer a single component
     return questions
-      .map((q, i) => (
-        <Question
-          onClick={() => onQuestionClick(q)}
-          key={i}
-          model={q}
-          className={
-            userClicks.map(u => u.question).includes(q.question)
-              ? "question cell clicked"
-              : "question cell"
-          }
-        />
-      ))
-      .concat(
-        questions.map((q, i) => (
-          <Answer
-            onClick={() => onAnswerClick(q)}
-            key={i + 999999}
-            model={q}
+      .map((q, i) => {
+        const newQ: QuestionModel = {
+          index: q.index,
+          answer: q.answer,
+          position: getScreenPos(q.question!!.length, q.position!!),
+          question: q.question
+        };
+
+        return (
+          <Question
+            onClick={() => onQuestionClick(q)}
+            key={i}
+            model={newQ}
             className={
-              userClicks.map(u => u.answer).includes(q.answer)
-                ? "answer cell clicked"
-                : "answer cell"
+              userClicks.map(u => u.question).includes(q.question)
+                ? "question cell clicked"
+                : "question cell"
             }
           />
-        ))
+        );
+      })
+      .concat(
+        questions.map((q, i) => {
+          const newA: QuestionModel = {
+            index: q.index,
+            answer: {
+              position: getScreenPos(
+                q.answer!!.value.toString().length,
+                q.answer!!.position
+              ),
+              value: q.answer!!.value
+            },
+            position: q.position,
+            question: q.question
+          };
+          return (
+            <Answer
+              onClick={() => onAnswerClick(q)}
+              key={i + 999999}
+              model={newA}
+              className={
+                userClicks.map(u => u.answer).includes(q.answer)
+                  ? "answer cell clicked"
+                  : "answer cell"
+              }
+            />
+          );
+        })
       );
   };
 
@@ -211,7 +225,7 @@ const MathGame = (props: Props) => {
   useEffect(() => {
     if (!mounted.current) mounted.current = true;
     else if (questions.length === 0 && windowSize.height !== 0)
-      generateQuestions(3);
+      generateQuestions(level + 2);
   });
   return <div className="math-game-area">{getQuestions()}</div>;
 };

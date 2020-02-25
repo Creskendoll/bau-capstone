@@ -2,7 +2,11 @@ import React from "react";
 import GameCard from "./GameCard";
 import "../../style/cards-game.css";
 
-const CardsGame = () => {
+interface Props {
+  setScore: (f: (score: number) => number) => void;
+}
+
+const CardsGame = (props: Props) => {
   // TODO: Add game logic
 
   // TODO: make this generate random pairs of cards

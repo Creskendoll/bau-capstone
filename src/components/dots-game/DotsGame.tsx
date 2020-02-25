@@ -15,7 +15,7 @@ import {
 } from "./DotGameConstants";
 
 interface Props {
-  setScore: (score: number) => void;
+  setScore: (f: (score: number) => number) => void;
 }
 
 const DotsGame = (props: Props) => {
@@ -106,6 +106,7 @@ const DotsGame = (props: Props) => {
 
   const resetGame = async (nextLevel: boolean) => {
     await sleep(800);
+    props.setScore(nextLevel ? s => dots.length - 2 : s => 0);
     setUserClicks([]);
     // Reset the game if nextLevel is false
     // Add another dot if true

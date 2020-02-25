@@ -1,6 +1,6 @@
-interface Position {
+interface CompPosition {
   top: number;
   left: number;
 }
 
-export default Position;
+export default CompPosition;
