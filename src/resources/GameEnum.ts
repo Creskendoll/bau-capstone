@@ -2,7 +2,8 @@ enum GameMode {
   MENU,
   CARDS,
   DOTS,
-  MATH
+  MATH,
+  FACE
 }
 
 export default GameMode;

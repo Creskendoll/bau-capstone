@@ -11,6 +11,13 @@ const Menu: React.FC<Props> = (props: Props) => {
   return (
     <div className="menu-container">
       <button
+        onClick={() => props.onClick(GameMode.FACE)}
+        className="menu-button"
+      >
+        <span className="menu-button-text">FACE</span>
+      </button>
+
+      <button
         onClick={() => props.onClick(GameMode.MATH)}
         className="menu-button"
       >

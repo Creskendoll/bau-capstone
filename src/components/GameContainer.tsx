@@ -5,6 +5,7 @@ import CardsGame from "./cards-game/CardsGame";
 import Menu from "./Menu";
 import DotsGame from "./dots-game/DotsGame";
 import MathGame from "./math-game/MathGame";
+import FaceScreen from "./face-api/FaceScreen";
 
 interface Props {
   setScore: (f: (s: number) => number) => void;
@@ -24,6 +25,8 @@ const GameContainer = (props: Props) => {
         return <DotsGame setScore={props.setScore} />;
       case GameMode.MATH:
         return <MathGame setScore={props.setScore} />;
+      case GameMode.FACE:
+        return <FaceScreen />;
       default:
         return <Menu onClick={props.onMenuBtnClick} />;
     }
