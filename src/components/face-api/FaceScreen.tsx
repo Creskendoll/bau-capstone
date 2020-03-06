@@ -21,36 +21,48 @@ const FaceScreen = () => {
     await faceapi.nets.faceLandmark68Net.loadFromUri("/weights");
     await faceapi.nets.faceExpressionNet.loadFromUri("/weights");
     setModelsLoading(false);
-    setInterval(drawPred, 100);
   };
 
   // Component did mount
   useEffect(() => {
     loadModels();
+
+    const predInterval = setInterval(drawPred, 100);
+    return () => {
+      clearInterval(predInterval);
+    };
   }, []);
 
   const drawPred = async () => {
-    const imgData = webcamRef.current.getScreenshot();
-    const img = await canvas.loadImage(imgData);
+    if (webcamRef.current) {
+      const imgData = webcamRef.current.getScreenshot();
+      const img = await canvas.loadImage(imgData);
 
-    const results = await faceapi
-      .detectAllFaces(img, faceDetectionOptions)
-      .withFaceLandmarks()
-      .withFaceExpressions();
+      const results = await faceapi
+        .detectAllFaces(img, faceDetectionOptions)
+        .withFaceLandmarks()
+        .withFaceExpressions();
 
-    const cnv = detectionRef.current;
-    const ctx = cnv.getContext("2d");
+      if (detectionRef.current) {
+        const cnv = detectionRef.current;
+        const ctx = cnv.getContext("2d");
 
-    var image = new Image();
-    image.src = imgData;
-    image.onload = function() {
-      ctx.drawImage(image, 0, 0);
-      faceapi.draw.drawDetections(
-        cnv,
-        results.map(res => res.detection)
-      );
-      faceapi.draw.drawFaceExpressions(cnv, results);
-    };
+        const image = new Image();
+        image.src = imgData;
+        image.onload = () => {
+          ctx.drawImage(image, 0, 0);
+          faceapi.draw.drawFaceLandmarks(
+            cnv,
+            results.map(res => res.landmarks)
+          );
+          faceapi.draw.drawDetections(
+            cnv,
+            results.map(res => res.detection)
+          );
+          faceapi.draw.drawFaceExpressions(cnv, results);
+        };
+      }
+    }
   };
 
   return (
