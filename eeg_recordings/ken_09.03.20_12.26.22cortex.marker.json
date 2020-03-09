@@ -1,0 +1,32 @@
+{
+    "Markers": [
+        {
+            "endDatetime": "2020-03-09T12:26:43.004811+03:00",
+            "extras": {
+            },
+            "index": 1,
+            "label": "Eyes Opened",
+            "port": "Baseline EmotivPRO",
+            "startDatetime": "2020-03-09T12:26:27.972260+03:00",
+            "type": "interval",
+            "uuid": "53ea2919-9e56-4e55-b52b-49f51c048e7c",
+            "value": 1
+        },
+        {
+            "endDatetime": "2020-03-09T12:27:03.814894+03:00",
+            "extras": {
+            },
+            "index": 2,
+            "label": "Eyes Closed",
+            "port": "Baseline EmotivPRO",
+            "startDatetime": "2020-03-09T12:26:48.756381+03:00",
+            "type": "interval",
+            "uuid": "92a16e64-d946-4e41-8a8f-2eaedd728a79",
+            "value": 3
+        }
+    ],
+    "exportApp": "com.emotiv.emotivpro",
+    "exportTime": "2020-03-09T12:29:12.698+03:00",
+    "recordId": "b4e281b1-e8f0-4aca-9fa2-304693217653",
+    "user": "baubme"
+}
