@@ -6,7 +6,7 @@ interface Props {
   onClick: (gameMode: GameMode) => void;
 }
 
-const Menu: React.FC<Props> = (props: Props) => {
+const Menu = (props: Props) => {
   // TODO: Add more options
   return (
     <div className="menu-container">
