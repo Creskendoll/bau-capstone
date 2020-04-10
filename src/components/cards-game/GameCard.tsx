@@ -1,14 +1,27 @@
 import React from "react";
+import { CardModel, CardFace } from "./CardModel";
 
 interface Props {
-  imageSrc: string;
+  model: CardModel
+  onClick: () => void;
+}
+
+interface CardStyle {
+  backgroundImage: string,
+  backgroundColor: string
 }
 
 const GameCard: React.FC<Props> = (props: Props) => {
-  // TODO: Attach on click
+  const model = props.model;
+  const style = {
+    backgroundImage: model.face === CardFace.FRONT ? "none" : `url("https://raw.githubusercontent.com/remojansen/logo.ts/master/ts.png")`,
+    backgroundColor: model.face === CardFace.FRONT ? model.color : "black"
+  };
+
   return (
     <div className="card-container">
-      <img className="card-image" src={props.imageSrc} alt="Card" />
+      <p style={{position: "absolute"}}>{`${model.value}\n${model.isClickable}\n${model.matched}`}</p>
+      <div className="card-image" style={style as CardStyle} onClick={props.onClick} />
     </div>
   );
 };
