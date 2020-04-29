@@ -15,9 +15,9 @@ const CardsGame = (props: Props) => {
     new Map<number, CardModel>()
   );
   const [previousPick, setPreviousPick] = useState<CardModel | null>(null);
+  const [currentDifficulty, setCurrentDifficulty] = useState<number>(8);
   
   //// Game logic
-
   // Operators
   const updateCards = () => {
     setCards(
@@ -65,6 +65,15 @@ const CardsGame = (props: Props) => {
     } else {
       console.assert(`Fatal error: card with id ${pick.id} was not found on the list.`);
     }
+  };
+  const isCompleted = () => {
+    let result = 0;
+    for (const pair of cards){
+      if (pair[1].matched){
+        result += 1;
+      }
+    }
+    return (result === cards.size);
   };
 
   const generateCards = (difficulty: number) => {
@@ -125,6 +134,15 @@ const CardsGame = (props: Props) => {
               pick.matched = true;
               pick.isClickable = false;
 
+              // Advance game
+              if (isCompleted()){
+                setPreviousPick(null);
+                setCurrentDifficulty(currentDifficulty + 4);
+                setCards(new Map<number, CardModel>());
+                generateCards(currentDifficulty);
+                return;
+              }
+
             } else {
 
               // Wrong card, both cards flip
@@ -166,7 +184,7 @@ const CardsGame = (props: Props) => {
   useEffect(() => {
     if (!mounted.current) mounted.current = true;
     else if (cards.size === 0)
-      generateCards(8);
+      generateCards(currentDifficulty);
   });
 
   // Display n cards depending on the difficulty
