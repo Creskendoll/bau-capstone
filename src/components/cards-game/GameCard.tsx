@@ -20,7 +20,6 @@ const GameCard: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="card-container">
-      <p style={{position: "absolute"}}>{`${model.value}\n${model.isClickable}\n${model.matched}`}</p>
       <div className="card-image" style={style as CardStyle} onClick={props.onClick} />
     </div>
   );

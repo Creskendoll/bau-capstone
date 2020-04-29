@@ -69,9 +69,6 @@ const CardsGame = (props: Props) => {
 
   const generateCards = (difficulty: number) => {
 
-    // DEBUG
-    console.log("Generating cards...", previousPick);
-
     const matches = difficulty / 2;
     let set = [...Array(matches).keys()];
 
@@ -97,9 +94,6 @@ const CardsGame = (props: Props) => {
 
     // Events
     const onCardClicked = async (card: CardModel) => {
-
-      // DEBUG
-      console.log("Last pick initial: ", previousPick);
       
       // Get cards
       const pick = cards.get(card.id);
@@ -125,9 +119,6 @@ const CardsGame = (props: Props) => {
             // Matched?
             if (previous.value === pick.value){
 
-              // DEBUG
-              console.log("It's a match!");
-
               // Right card, both cards stay
               previous.matched = true;
               previous.isClickable = false;
@@ -135,9 +126,6 @@ const CardsGame = (props: Props) => {
               pick.isClickable = false;
 
             } else {
-
-              // DEBUG
-              console.log("Wrong pick!");
 
               // Wrong card, both cards flip
               flipCard(pick);
@@ -153,9 +141,6 @@ const CardsGame = (props: Props) => {
 
           // First pick
           setPreviousPick(card);
-
-          // DEBUG
-          console.log("Lats pick final: ", previousPick);
 
         }
 
