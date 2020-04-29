@@ -24,6 +24,15 @@ const CardsGame = (props: Props) => {
       new Map<number, CardModel>(cards)
     );
   };
+  const updateClickableStatus = (isClickable: boolean) => {
+
+    // Go through cards
+    for (let pair of cards){
+      pair[1].isClickable = isClickable;
+    }
+
+    updateCards();
+  };
   const flipCard = (pick: CardModel) => {
 
     // Get card
@@ -101,6 +110,7 @@ const CardsGame = (props: Props) => {
           const previous = cards.get(previousPick.id);
 
           // Let the user memorize
+          updateClickableStatus(false);
           await sleep(3000);
 
           if (previous){
@@ -125,10 +135,12 @@ const CardsGame = (props: Props) => {
               // Wrong card, both cards flip
               flipCard(pick);
               flipCard(previous);
-              setPreviousPick(null);
 
             }
           }
+
+          // Reset pick
+          setPreviousPick(null);
 
         } else {
 
@@ -139,6 +151,9 @@ const CardsGame = (props: Props) => {
           console.log("Lats pick final: ", previousPick);
 
         }
+
+        // Unlock cards
+        updateClickableStatus(true);
       }
 
       // Exit
