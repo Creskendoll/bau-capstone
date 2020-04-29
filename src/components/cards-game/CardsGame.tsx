@@ -133,6 +133,8 @@ const CardsGame = (props: Props) => {
               previous.isClickable = false;
               pick.matched = true;
               pick.isClickable = false;
+              
+              props.setScore(score => score + 1);
 
               // Advance game
               if (isCompleted()){
