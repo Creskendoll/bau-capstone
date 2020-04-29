@@ -3,21 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@types/jest": "^24.0.23",
-    "@types/node": "^12.12.17",
-    "@types/react": "^16.9.16",
-    "@types/react-dom": "^16.9.4",
-    "typescript": "^3.7.3"
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.37",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
     "canvas": "^2.6.1",
     "face-api.js": "^0.22.1",
-    "node": "^13.8.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "node": "^13.13.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-scripts": "3.3.0",
     "react-webcam": "^5.0.0"
   },
