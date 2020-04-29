@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import GameCard from "./GameCard";
 import "../../style/cards-game.css";
 import { CardFace, CardModel} from "./CardModel";
-import { shuffle, sleep } from "../../misc/Helpers";
+import { getRandomColor,shuffle, sleep } from "../../misc/Helpers";
 
 interface Props {
   setScore: (f: (score: number) => number) => void;
@@ -24,7 +24,7 @@ const CardsGame = (props: Props) => {
       new Map<number, CardModel>(cards)
     );
   };
-  const updateClickableStatus = (isClickable: boolean) => {
+  const updateCardsClickable = (isClickable: boolean) => {
 
     // Go through cards
     for (let pair of cards){
@@ -74,12 +74,19 @@ const CardsGame = (props: Props) => {
 
     const matches = difficulty / 2;
     let set = [...Array(matches).keys()];
+
+    // Generate colors
+    const valueToColor = new Map<number, string>();
+    for (let value of set){
+      valueToColor[value] = getRandomColor();
+    }
+
     setCards(new Map<number, CardModel>(
       shuffle(set.concat(set)).map((value, index) => {return [index, {
         id: index,
         value: value,
         face: CardFace.BACK,
-        color: "red",
+        color: valueToColor[value],
         matched: false,
         isClickable: true,
       }]})
@@ -110,7 +117,7 @@ const CardsGame = (props: Props) => {
           const previous = cards.get(previousPick.id);
 
           // Let the user memorize
-          updateClickableStatus(false);
+          updateCardsClickable(false);
           await sleep(3000);
 
           if (previous){
@@ -153,7 +160,7 @@ const CardsGame = (props: Props) => {
         }
 
         // Unlock cards
-        updateClickableStatus(true);
+        updateCardsClickable(true);
       }
 
       // Exit
