@@ -17,6 +17,7 @@
     "face-api.js": "^0.22.1",
     "node": "^13.13.0",
     "react": "^16.13.1",
+    "react-dev-utils": "^10.0.0",
     "react-dom": "^16.13.1",
     "react-scripts": "3.3.0",
     "react-webcam": "^5.0.0"
